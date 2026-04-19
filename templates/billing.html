@@ -1,0 +1,15 @@
+<div class="container">
+    <h2>Billing</h2>
+
+    <form action="/billing" method="POST">
+        <input type="number" name="patient_id" placeholder="Patient ID">
+        <input type="number" name="amount" placeholder="Amount">
+        
+        <select name="status">
+            <option>Paid</option>
+            <option>Pending</option>
+        </select>
+
+        <button type="submit">Generate Bill</button>
+    </form>
+</div>
