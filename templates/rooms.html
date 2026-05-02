@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Room Management - Hospital Management System{% endblock %}
+{% block page_title %}Room Management{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
+    <!-- Add Room Form -->
+    <div class="card">
+        <h2>Add a New Room</h2>
+        <form action="/rooms" method="POST">
+            <div class="form-group">
+                <label>Room Type</label>
+                <select name="room_type" required>
+                    <option value="" disabled selected>Select Room Type</option>
+                    <option value="General Ward">General Ward</option>
+                    <option value="ICU">ICU</option>
+                    <option value="Private Suite">Private Suite</option>
+                    <option value="Operation Theater">Operation Theater</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-plus"></i> Add Room
+            </button>
+        </form>
+    </div>
+
+    <!-- Room List -->
+    <div class="card">
+        <h2>Current Rooms</h2>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 12px;">Room ID</th>
+                        <th style="padding: 12px;">Type</th>
+                        <th style="padding: 12px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 12px;">{{ room[0] }}</td>
+                        <td style="padding: 12px;">{{ room[1] }}</td>
+                        <td style="padding: 12px;">
+                            {% if room[2] == 1 %}
+                                <span style="background: #ecfdf5; color: #047857; padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 14px;">Available</span>
+                            {% else %}
+                                <span style="background: #fef2f2; color: #b91c1c; padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 14px;">Occupied</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="padding: 12px; text-align: center; color: var(--text-muted);">No rooms found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Medical Records - Hospital Management System{% endblock %}
+{% block page_title %}Medical Records{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
+    <!-- Add Medical Record Form -->
+    <div class="card">
+        <h2>Add Medical Record</h2>
+        <form action="/medical_records" method="POST">
+            <div class="form-group">
+                <label>Patient</label>
+                <select name="patient_id" required>
+                    <option value="" disabled selected>Select a Patient</option>
+                    {% for patient in patients %}
+                    <option value="{{ patient[0] }}">{{ patient[0] }} - {{ patient[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Diagnosis</label>
+                <textarea name="diagnosis" placeholder="Enter patient diagnosis..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Treatment</label>
+                <textarea name="treatment" placeholder="Enter prescribed treatment..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Record Date</label>
+                <input type="date" name="record_date" required>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> Save Record
+            </button>
+        </form>
+    </div>
+
+    <!-- View Medical Records -->
+    <div class="card">
+        <h2>Patient History</h2>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 12px;">Date</th>
+                        <th style="padding: 12px;">Patient</th>
+                        <th style="padding: 12px;">Diagnosis</th>
+                        <th style="padding: 12px;">Treatment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr style="border-bottom: 1px solid var(--border-color); vertical-align: top;">
+                        <td style="padding: 12px; white-space: nowrap;">{{ record[4] }}</td>
+                        <td style="padding: 12px; font-weight: 500;">{{ record[1] }}</td>
+                        <td style="padding: 12px;">{{ record[2] }}</td>
+                        <td style="padding: 12px;">{{ record[3] }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="padding: 12px; text-align: center; color: var(--text-muted);">No medical records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

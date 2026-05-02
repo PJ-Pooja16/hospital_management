@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hospital Management System{% endblock %}</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        {% if request.endpoint != 'login' %}
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-hospital-symbol header-icon"></i>
+                <h2>MediCare</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="{{ url_for('add_patient') }}" class="nav-item {% if request.endpoint == 'add_patient' %}active{% endif %}">
+                    <i class="fas fa-user-plus"></i> Add Patient
+                </a>
+                <a href="{{ url_for('add_doctor') }}" class="nav-item {% if request.endpoint == 'add_doctor' %}active{% endif %}">
+                    <i class="fas fa-user-md"></i> Add Doctor
+                </a>
+                <a href="{{ url_for('appointment') }}" class="nav-item {% if request.endpoint == 'appointment' %}active{% endif %}">
+                    <i class="fas fa-calendar-check"></i> Appointments
+                </a>
+                <a href="{{ url_for('admission') }}" class="nav-item {% if request.endpoint == 'admission' %}active{% endif %}">
+                    <i class="fas fa-procedures"></i> Admissions
+                </a>
+                <a href="{{ url_for('billing') }}" class="nav-item {% if request.endpoint == 'billing' %}active{% endif %}">
+                    <i class="fas fa-file-invoice-dollar"></i> Billing
+                </a>
+                <a href="{{ url_for('rooms') }}" class="nav-item {% if request.endpoint == 'rooms' %}active{% endif %}">
+                    <i class="fas fa-bed"></i> Rooms
+                </a>
+                <a href="{{ url_for('medical_records') }}" class="nav-item {% if request.endpoint == 'medical_records' %}active{% endif %}">
+                    <i class="fas fa-notes-medical"></i> Medical Records
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('login') }}" class="nav-item text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </aside>
+        {% endif %}
+
+        <main class="main-container {% if request.endpoint == 'login' %}login-container{% endif %}">
+            <!-- Topbar (Optional, visible mainly for layout consistency) -->
+            {% if request.endpoint != 'login' %}
+            <header class="topbar">
+                <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+                <div class="user-profile">
+                    <div class="avatar"><i class="fas fa-user"></i></div>
+                    <span>Admin</span>
+                </div>
+            </header>
+            {% endif %}
+
+            <div class="content-wrapper">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <div class="flash-messages">
+                      {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+
+                <!-- Main Content -->
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

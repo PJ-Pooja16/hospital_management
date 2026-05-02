@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Patient Admission - Hospital Management System{% endblock %}
+{% block page_title %}Patient Admission{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Admit a Patient</h2>
+    <form action="/admission" method="POST">
+        <div class="form-group">
+            <label>Patient</label>
+            <select name="patient_id" required>
+                <option value="" disabled selected>Select a Patient</option>
+                {% for patient in patients %}
+                <option value="{{ patient[0] }}">{{ patient[0] }} - {{ patient[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Available Room</label>
+            <select name="room_id" required>
+                <option value="" disabled selected>Select an Available Room</option>
+                {% if rooms %}
+                    {% for room in rooms %}
+                    <option value="{{ room[0] }}">Room {{ room[0] }} - {{ room[1] }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="" disabled>No rooms currently available</option>
+                {% endif %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Admission Date</label>
+            <input type="date" name="admission_date" required>
+        </div>
+        
+        <button type="submit" class="btn">
+            <i class="fas fa-procedures"></i> Admit Patient
+        </button>
+    </form>
+</div>
+{% endblock %}
