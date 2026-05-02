@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription - {{ data[4] }}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            margin: 0;
+            padding: 40px;
+            background: #f1f5f9;
+        }
+        .prescription-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-top: 8px solid #2563eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .hospital-details h1 {
+            margin: 0;
+            color: #2563eb;
+            font-size: 28px;
+        }
+        .hospital-details p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+        .prescription-title {
+            text-align: right;
+        }
+        .prescription-title h2 {
+            margin: 0;
+            color: #0f172a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .patient-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .patient-info div {
+            font-size: 15px;
+        }
+        .patient-info strong {
+            color: #475569;
+        }
+        .clinical-details {
+            margin-bottom: 60px;
+        }
+        .clinical-section {
+            margin-bottom: 30px;
+        }
+        .clinical-section h3 {
+            color: #2563eb;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .clinical-section p {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 80px;
+            padding-top: 20px;
+        }
+        .signature {
+            text-align: center;
+            width: 250px;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 10px;
+            color: #475569;
+            font-weight: 600;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .prescription-container {
+                box-shadow: none;
+                max-width: 100%;
+                border-top: 8px solid #000;
+            }
+            .hospital-details h1, .clinical-section h3 {
+                color: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="prescription-container">
+        <div class="header">
+            <div class="hospital-details">
+                <h1>MediCare Hospital</h1>
+                <p>123 Health Avenue, Medical District</p>
+                <p>Phone: +1 800-MEDICARE | Web: medicare.example.com</p>
+            </div>
+            <div class="prescription-title">
+                <h2>Prescription</h2>
+                <p>Record ID: #{{ data[0] }}</p>
+                <p>Date: {{ data[1] }}</p>
+            </div>
+        </div>
+
+        <div class="patient-info">
+            <div><strong>Patient Name:</strong> {{ data[4] }}</div>
+            <div><strong>Age:</strong> {{ data[5] }}</div>
+            <div><strong>Gender:</strong> {{ data[6] }}</div>
+            <div><strong>Phone:</strong> {{ data[7] }}</div>
+        </div>
+
+        <div class="clinical-details">
+            <div class="clinical-section">
+                <h3>Diagnosis</h3>
+                <p>{{ data[2] }}</p>
+            </div>
+            
+            <div class="clinical-section">
+                <h3>Rx / Prescribed Treatment</h3>
+                <p style="font-size: 18px; font-weight: 600;">{{ data[3] }}</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="font-size: 12px; color: #94a3b8;">
+                <p>This is a computer-generated prescription.</p>
+                <p>Please bring this prescription during your next visit.</p>
+            </div>
+            <div class="signature">
+                Doctor's Signature / Stamp
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto Print Script -->
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+            }, 500);
+        };
+    </script>
+</body>
+</html>
