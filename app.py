@@ -237,5 +237,56 @@ def medical_records():
     
     return render_template('medical_records.html', patients=patients, records=records)
 
+@app.route('/edit_record/<int:record_id>', methods=['GET', 'POST'])
+def edit_record(record_id):
+    if request.method == 'POST':
+        diagnosis = request.form['diagnosis']
+        treatment = request.form['treatment']
+        record_date = request.form['record_date']
+        
+        query = "UPDATE medical_record SET diagnosis=%s, treatment=%s, record_date=%s WHERE record_id=%s"
+        try:
+            cursor.execute(query, (diagnosis, treatment, record_date, record_id))
+            db.commit()
+            flash("✅ Medical Record Updated Successfully!", "success")
+        except mysql.connector.Error as err:
+            db.rollback()
+            flash(f"❌ Database Error: {err.msg}", "danger")
+            
+        return redirect(url_for('medical_records'))
+        
+    # GET request - fetch the specific record to populate the form
+    cursor.execute("""
+        SELECT m.record_id, p.name, m.diagnosis, m.treatment, m.record_date 
+        FROM medical_record m 
+        JOIN Patient p ON m.patient_id = p.patient_id
+        WHERE m.record_id = %s
+    """, (record_id,))
+    record = cursor.fetchone()
+    
+    if not record:
+        flash("❌ Record not found!", "danger")
+        return redirect(url_for('medical_records'))
+        
+    return render_template('edit_record.html', record=record)
+
+@app.route('/prescription/<int:record_id>')
+def prescription(record_id):
+    # Fetch record and patient details for the prescription
+    cursor.execute("""
+        SELECT m.record_id, m.record_date, m.diagnosis, m.treatment,
+               p.name, p.age, p.gender, p.phone
+        FROM medical_record m
+        JOIN Patient p ON m.patient_id = p.patient_id
+        WHERE m.record_id = %s
+    """, (record_id,))
+    prescription_data = cursor.fetchone()
+    
+    if not prescription_data:
+        flash("❌ Prescription not found!", "danger")
+        return redirect(url_for('medical_records'))
+        
+    return render_template('prescription.html', data=prescription_data)
+
 if __name__ == "__main__":
     app.run(debug=True)
